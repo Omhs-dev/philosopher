@@ -2,7 +2,7 @@ NAME = philo
 BONUS_NAME = checker
 
 SRCS = ./main.c \
-		src/init.c src/utils.c
+		src/init.c src/utils.c src/gettime.c
 
 # SRC_B = 
 

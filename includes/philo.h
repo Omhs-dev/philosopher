@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:25:59 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/01/22 19:53:58 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/01/24 04:29:27 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <pthread.h>
 # include <stdlib.h>
+# include <sys/time.h>
+# include <stdio.h>
+
+
 
 typedef struct s_philo
 {
@@ -39,5 +43,8 @@ t_philo *init_philo(char **argv);
 int ft_atoi(char *str);
 t_philo_list *creat_list(char **argv);
 t_philo_list *init_list(void);
+uint64_t ft_gettime_microsec();
+uint64_t  ft_gettime_millisec();
+
 
 #endif
