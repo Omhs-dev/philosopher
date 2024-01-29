@@ -6,49 +6,31 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:45:52 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/01/22 20:40:28 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/01/29 06:56:27 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int ft_atoi(char *str)
-{
-	int sign;
-	int opr;
-
-	sign = 1;
-	opr = 0;
-	while (*str == ' ' && (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '-')
-		sign = -1;
-	if (*str == '+' || *str == '-')
-		str++;
-	while (*str >= '0' && *str <= '9')
-	{
-		opr = opr * 10 + *str - '0';
-		str++;
-	}
-	return (sign * opr);
-}
-
-t_philo *init_philo(char **argv)
+t_philo *init_philo(char **argv, t_data **data)
 {
 	t_philo *phil;
-	
-	
+
 	(void)argv;
 	phil = malloc(sizeof(t_philo));
 	if (!phil)
 		return (NULL);
 	pthread_mutex_init(&(phil->fork_right), NULL);
-	// phil->time_die = argv[2];
+	phil->data = *data;
+	phil->philo_number = 0;
+	phil->time_sleep = (*data)->time_sleep;
+	phil->time_eat = (*data)->time_eat;
+	phil->time_die = (*data)->time_die;
+	// phil->time_think = (*data)->time_think;
 	// phil->time_eat = argv[3];
 	// phil->time_sleep = argv[4];
 	phil->next = NULL;
 	phil->prev = NULL;
-	// phil->time_sleep = 0;
 	// phil->fork = 
 	return (phil);
 }
@@ -64,4 +46,18 @@ t_philo_list *init_list(void)
 	list->last = NULL;
 	list->size = 0;
 	return (list);
+}
+
+t_data *init_data(char **argv)
+{
+	t_data *data;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);
+	data->time_die = ft_atoi(argv[2]);
+	data->time_eat = ft_atoi(argv[3]);
+	data->time_sleep = ft_atoi(argv[4]);
+	pthread_mutex_init(&(data->printf), NULL);
+	return (data);
 }
