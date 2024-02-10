@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 18:28:50 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/01/29 06:18:23 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/10 05:09:05 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int ft_atoi(char *str)
 
 	sign = 1;
 	opr = 0;
-	while (*str == ' ' && (*str >= 9 && *str <= 13))
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (*str == '-')
 		sign = -1;
@@ -80,4 +80,43 @@ t_philo_list *creat_list(char **argv, t_data **data)
 	}
 	current->fork_left = &(current->prev->fork_right);
 	return (list);
+}
+
+void ft_free(t_philo *philo)
+{
+	free(&(philo->fork_right));
+	free(philo->fork_left);
+	free(philo->thread);
+}
+
+void destroy_mutex(t_philo *philo, t_philo_list *list)
+{
+	philo = list->first;
+	while (philo)
+	{
+		pthread_mutex_destroy(&*(philo->fork_left));
+		pthread_mutex_destroy(&(philo->fork_right));
+		pthread_mutex_destroy(&(philo->handle_mutex));
+		philo = philo->next;
+	}
+	pthread_mutex_destroy(&(philo->data->printf));
+	pthread_mutex_destroy(&(philo->handle_mutex));
+	ft_free(philo);
+}
+
+int error_message(char *str, t_philo *philo, t_philo_list *list)
+{
+	printf("%s\n", str);
+	if (list)
+		destroy_mutex(philo, list);
+	return (1);
+}
+
+void ft_usleep(uint64_t millsec)
+{
+	uint64_t time;
+
+	time = ft_gettime_millisec() + millsec;
+	while (ft_gettime_millisec() != time)
+		;
 }

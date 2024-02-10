@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 18:26:58 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/01/29 07:01:22 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:26:15 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 	
 	(void)argc;
 	t_philo_list *list;
-	data = init_data(argv);
+	data = init_data(argc, argv);
 	list = creat_list(argv, &data);
 	if (!data || !list)
 		return (0);
