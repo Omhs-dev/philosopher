@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 18:26:58 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/10 00:26:15 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/12 10:05:25 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ int main(int argc, char **argv)
 	
 	(void)argc;
 	t_philo_list *list;
+	if (all_input(argc, argv) == 1)
+		return (1);
 	data = init_data(argc, argv);
+	if (check_values(argc, data) == 1)
+		return (1);
 	list = creat_list(argv, &data);
 	if (!data || !list)
 		return (0);
@@ -31,6 +35,7 @@ int main(int argc, char **argv)
 	// current = list->first;
 	// printf("starting time %llu\n", 	start_time);
 	create_and_start_threads(list);
+	printf("time: %llu\n", data->time_die);
 	// printf("size = %zu\n",list->size);
 	return (0);
 }

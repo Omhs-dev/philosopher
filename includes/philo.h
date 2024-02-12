@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:25:59 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/10 01:39:18 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/12 10:05:13 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 typedef struct s_data
 {
 	pthread_mutex_t printf;
+	pthread_mutex_t check_death;
 	uint64_t time_sleep;
 	uint64_t time_die;
 	uint64_t time_eat;
@@ -36,12 +37,12 @@ typedef struct s_philo
 {
 	pthread_mutex_t fork_right;
 	pthread_mutex_t *fork_left;
-	pthread_mutex_t handle_mutex;
 	t_data *data;
 	pthread_t thread;
 	uint64_t time_sleep;
 	uint64_t time_die;
 	uint64_t time_eat;
+	uint64_t start_time;
 	int meals_eaten;
 	int eat_status;
 	int philo_number;
@@ -71,12 +72,19 @@ void print_message(t_philo *philo, char *str);
 void take_the_forks(t_philo *philo);
 void drop_the_forks(t_philo *philo);
 void is_eating(t_philo *philo);
-void ft_free(t_philo *philo);
+void ft_free(t_philo *philo, t_data *data, t_philo_list *list);
 void destroy_mutex(t_philo *philo, t_philo_list *list);
 int error_message(char *str, t_philo *philo, t_philo_list *list);
 void is_sleeping(t_philo *philo);
 void ft_usleep(uint64_t millsec);
 void is_thinking(t_philo *philo);
 int check(t_philo *philo);
+void error_return(void);
+int check_input(char *str);
+int input(char *str);
+void cleanup(t_philo_list *philo_list, t_data *data);
+// void cleanup(t_philo_list *philo_list);
+int all_input(int argc, char **argv);
+int check_values(int argc, t_data *data);
 
 #endif

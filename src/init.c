@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:45:52 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/10 01:45:22 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/12 08:36:38 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_philo *init_philo(char **argv, t_data **data)
 	if (!phil)
 		return (NULL);
 	pthread_mutex_init(&(phil->fork_right), NULL);
-	pthread_mutex_init(&(phil->handle_mutex), NULL);
 	phil->meals_eaten = 0;
 	phil->data = *data;
 	// phil->eat_status = 0;
@@ -29,6 +28,7 @@ t_philo *init_philo(char **argv, t_data **data)
 	phil->time_sleep = (*data)->time_sleep;
 	phil->time_eat = (*data)->time_eat;
 	phil->time_die = (*data)->time_die;
+	phil->start_time = (*data)->start_time;
 	phil->next = NULL;
 	phil->prev = NULL;
 	return (phil);
@@ -55,6 +55,7 @@ t_data *init_data(int argc, char **argv)
 	if (!data)
 		return (NULL);
 	data->done = 0;
+	data->numbers_of_philo = ft_atoi(argv[1]);
 	data->start_time = ft_gettime_millisec();
 	data->death_status = 0;
 	data->time_die = ft_atoi(argv[2]);
@@ -65,6 +66,6 @@ t_data *init_data(int argc, char **argv)
 	else
 		data->max_meals_eaten = -1;
 	pthread_mutex_init(&(data->printf), NULL);
-	// pthread_mutex_init(&(data->handle_mutex), NULL);
+	pthread_mutex_init(&(data->check_death), NULL);
 	return (data);
 }
