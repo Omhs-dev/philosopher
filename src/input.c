@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 08:18:55 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/12 10:06:06 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/14 05:28:05 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ int check_values(int argc, t_data *data)
 		}
 	}
 	if (data->numbers_of_philo > 200
-		|| data->numbers_of_philo <= 0
-		|| data->time_die < 0
-		|| data->time_eat < 0
-		|| data->time_sleep < 0)
+		|| data->numbers_of_philo <= 0)
+		// || data->time_die < 0
+		// || data->time_eat < 0
+		// || data->time_sleep < 0)
 	{
 		printf("Error: Invalid values\n");
 		return (1);

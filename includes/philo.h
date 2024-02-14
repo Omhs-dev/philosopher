@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:25:59 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/12 10:05:13 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/14 04:49:31 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void print_message(t_philo *philo, char *str);
 void take_the_forks(t_philo *philo);
 void drop_the_forks(t_philo *philo);
 void is_eating(t_philo *philo);
-void ft_free(t_philo *philo, t_data *data, t_philo_list *list);
-void destroy_mutex(t_philo *philo, t_philo_list *list);
-int error_message(char *str, t_philo *philo, t_philo_list *list);
+void ft_free(t_philo_list *list);
+void destroy_mutex(t_philo_list *list);
+int error_message(char *str, t_philo_list *list);
 void is_sleeping(t_philo *philo);
 void ft_usleep(uint64_t millsec);
 void is_thinking(t_philo *philo);
@@ -82,9 +82,11 @@ int check(t_philo *philo);
 void error_return(void);
 int check_input(char *str);
 int input(char *str);
-void cleanup(t_philo_list *philo_list, t_data *data);
+void cleanup(t_philo_list *philo_list);
 // void cleanup(t_philo_list *philo_list);
 int all_input(int argc, char **argv);
 int check_values(int argc, t_data *data);
+void free_philo(t_philo *philo);
+void free_list(t_philo_list *list);
 
 #endif

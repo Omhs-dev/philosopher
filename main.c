@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 18:26:58 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/12 10:05:25 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/14 05:25:19 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,13 @@ int main(int argc, char **argv)
 		return (1);
 	list = creat_list(argv, &data);
 	if (!data || !list)
-		return (0);
-	// t_philo *current;
-	// uint64_t start_time;
-	// int j;
-	// j = 0;
-	// start_time = ft_gettime_millisec();
-	// current = list->first;
-	// printf("starting time %llu\n", 	start_time);
+		return (1);
 	create_and_start_threads(list);
 	printf("time: %llu\n", data->time_die);
 	// printf("size = %zu\n",list->size);
+	destroy_mutex(list);
+	free(data);
+	ft_free(list);
+	// system("leaks check");
 	return (0);
 }

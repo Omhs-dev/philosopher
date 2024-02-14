@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 18:28:50 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/12 09:04:09 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/14 05:23:55 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,31 +82,26 @@ t_philo_list *creat_list(char **argv, t_data **data)
 	return (list);
 }
 
-void ft_free(t_philo *philo, t_data *data, t_philo_list *list)
+void ft_free(t_philo_list *list)
 {
-	free(data);
-	free(philo);
+	free(list->first);
 	free(list);
 }
 
-void destroy_mutex(t_philo *philo, t_philo_list *list)
+void destroy_mutex(t_philo_list *list)
 {
-	philo = list->first;
-	while (philo)
-	{
-		pthread_mutex_destroy(&*(philo->fork_left));
-		pthread_mutex_destroy(&(philo->fork_right));
-		philo = philo->next;
-	}
-	pthread_mutex_destroy(&(philo->data->printf));
-	ft_free(philo, philo->data, list);
+	// pthread_mutex_destroy(&*(current->fork_left));
+	pthread_mutex_destroy(&(list->first->fork_right));
+	pthread_mutex_destroy(&(list->first->data->printf));
+	pthread_mutex_destroy(&(list->first->data->check_death));
+	// ft_free(list);
 }
 
-int error_message(char *str, t_philo *philo, t_philo_list *list)
+int error_message(char *str, t_philo_list *list)
 {
 	printf("%s\n", str);
-	if (list)
-		destroy_mutex(philo, list);
+	destroy_mutex(list);
+	ft_free(list);
 	return (1);
 }
 
@@ -125,28 +120,4 @@ void error_return(void)
 	return ;
 }
 
-void cleanup(t_philo_list *philo_list, t_data *data)
-{
-    // Destroy mutexes
-    t_philo *current = philo_list->first;
-    while (current) {
-        pthread_mutex_destroy(&current->fork_right);
-        current = current->next;
-    }
-
-    // Free dynamically allocated memory for philosophers
-    current = philo_list->first;
-    while (current) {
-        t_philo *next = current->next;
-        free(current); // Assuming t_philo struct itself was dynamically allocated
-        current = next;
-    }
-    free(philo_list); // Assuming philo_list itself was dynamically allocated
-
-    // Free dynamically allocated memory for data
-    free(data); // Assuming t_data struct itself was dynamically allocated
-
-    // Print message
-    printf("Cleanup completed successfully\n");
-}
 

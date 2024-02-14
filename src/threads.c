@@ -6,7 +6,7 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 20:22:23 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/12 07:48:25 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/14 01:52:43 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,17 @@ int create_and_start_threads(t_philo_list *philo_list)
 	t_philo *current;
 	uint64_t current_time;
 	current = philo_list->first;
-	// if (current->data->meal_eaten > 0)
-	// {
-	// 	if (pthread_create(&(current->thread), NULL, &monitoring, (void *)current) != 0)
-	// 		return (error_message("Error", current, philo_list));
-	// }
 	while (current)
 	{
 		if (pthread_create(&(current->thread), NULL, &routine, (void *)current) != 0)
-			return (error_message("Error", current, philo_list));
+			return (error_message("Error", philo_list));
 		// else
 		// 	printf("philo number %d created\n", current->philo_number);
 		if (current == philo_list->last)
 			break ;
 		current = current->next;
 	}
+	current = philo_list->first;
 	while (current)
 	{
 		current_time = ft_gettime_millisec() - current->start_time;
@@ -85,7 +81,7 @@ int create_and_start_threads(t_philo_list *philo_list)
 	while (current)
 	{
 		if (pthread_join(current->thread, NULL) != 0)
-			return (error_message("Error", current, philo_list));
+			return (error_message("Error", philo_list));
 		if (current == philo_list->first)
 			break ;
 		current = current->prev;
