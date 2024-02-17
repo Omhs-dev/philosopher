@@ -1,9 +1,9 @@
 NAME = philo
-BONUS_NAME = checker
 
 SRCS = ./main.c \
 		src/init.c src/utils.c src/gettime.c \
-		src/threads.c  src/routine.c src/input.c
+		src/threads.c  src/routine.c src/input.c \
+		src/check.c src/actions.c src/list.c 
 
 # SRC_B = 
 
@@ -13,11 +13,10 @@ INCS	= -I ./includes/
 
 CC = cc
 
-FLAGS = -g -Wall -Wextra -Werror -fsanitize=address -static-libsan
+FLAGS = -g -Wall -Wextra -Werror #-fsanitize=thread
+# -static-libsan
 
 OBJS = $(SRCS:.c=.o)
-
-OBJ_B = $(SRC_B:.c=.o)
 
 $(NAME):	$(OBJS)
 		@${CC} $(FLAGS) $(SRCS) -o $(NAME)
@@ -27,15 +26,13 @@ $(BONUS_NAME) : $(OBJ_B)
 
 all: $(NAME)
 
-bonus: $(BONUS_NAME)
-
 clean:
-		@$(RM) $(OBJS) $(OBJ_B)
+		@$(RM) $(OBJS)
 
 fclean: clean
-		$(RM) $(NAME) $(BONUS_NAME)
+		$(RM) $(NAME)
 
 re: fclean all
 
 
-.PHONY : all clean fclean re bonus
+.PHONY : all clean fclean

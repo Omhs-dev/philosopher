@@ -6,86 +6,69 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 03:10:27 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/14 03:31:19 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/17 09:33:40 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int check(t_philo *philo)
+void	print_message(t_philo *philo, char *str)
 {
-	uint64_t time;
-	uint64_t current_time;
-	time = ft_gettime_millisec() - philo->start_time;
-	current_time = ft_gettime_millisec() - philo->data->start_time;
-	pthread_mutex_lock(&philo->data->check_death);
-	if (time > philo->data->time_die)
-	{
-		if (philo->data->death_status == 0)
-		{
-			philo->data->death_status = 1;
-			pthread_mutex_lock(&philo->data->printf);
-			printf("%llu %d %s\n", current_time, philo->philo_number, "died");
-			pthread_mutex_unlock(&philo->data->printf);
-		}
-	}
-	pthread_mutex_unlock(&philo->data->check_death);
-	if (philo->data->death_status == 1)
-		return (1);
-	return (0);
-}
-
-void is_sleeping(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->printf);
-	print_message(philo, "is sleeping");
-	pthread_mutex_unlock(&philo->data->printf);
-	ft_usleep(philo->time_sleep);
-}
-
-void is_thinking(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->printf);
-	print_message(philo, "is thinking");
-	pthread_mutex_unlock(&philo->data->printf);
-}
-
-void print_message(t_philo *philo, char *str)
-{
-	uint64_t curren_time;
+	uint64_t	curren_time;
 
 	curren_time = ft_gettime_millisec() - philo->data->start_time;
-	// pthread_mutex_lock(&philo->data->printf);
 	if (check(philo))
 		return ;
 	printf("%llu %d %s\n", curren_time, philo->philo_number, str);
-	// pthread_mutex_unlock(&philo->data->printf);
 }
 
-void take_the_forks(t_philo *philo)
+void	one_philo(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->fork_right));
-	// printf("before taking the fork\n");
-	pthread_mutex_lock(&*(philo->fork_left));
-	pthread_mutex_lock(&philo->data->printf);
-	print_message(philo, "has taken a fork");
-	// printf("before taking the fork\n");
-	print_message(philo, "has taken a fork");
-	// printf("after taking the fork\n");
+	uint64_t	time;
+
+	if (philo->data->numbers_of_philo == 1)
+	{
+		pthread_mutex_lock(&philo->fork_right);
+		time = ft_gettime_millisec();
+		printf("%llu %d has taken a fork\n",
+			time - philo->data->start_time, philo->philo_number);
+	}
 }
 
-void drop_the_forks(t_philo *philo)
+void	philo_that_think(t_philo *philo)
 {
-	pthread_mutex_unlock(&(philo->fork_right));
-	pthread_mutex_unlock(&*(philo->fork_left));
+	if ((philo->philo_number % 2 == 0
+			|| (philo->philo_number == philo->data->numbers_of_philo
+				&& philo->philo_number % 2 == 1))
+		&& (philo->data->numbers_of_philo != 1))
+	{
+		is_thinking(philo);
+		ft_usleep(1);
+	}
 }
 
-void is_eating(t_philo *philo)
+void	*routine(void *arg)
 {
-	take_the_forks(philo);
-	print_message(philo, "is eating");
-	pthread_mutex_unlock(&philo->data->printf);
-	ft_usleep(philo->data->time_eat);
-	philo->meals_eaten++;
-	drop_the_forks(philo);
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	philo_that_think(philo);
+	while (check_meals_eaten(philo) != 0
+		&& check_death_status(philo) == 0
+		&& (philo->data->numbers_of_philo != 1))
+	{
+		if (check(philo) == 1)
+			return (NULL);
+		is_eating(philo);
+		if (check(philo) == 1)
+			return (NULL);
+		is_sleeping(philo);
+		if (check(philo) == 1)
+			return (NULL);
+		is_thinking(philo);
+		if (check(philo) == 1)
+			return (NULL);
+	}
+	one_philo(philo);
+	return (arg);
 }

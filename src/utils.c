@@ -6,16 +6,16 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 18:28:50 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/14 05:23:55 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/17 09:34:24 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
-	int sign;
-	int opr;
+	int	sign;
+	int	opr;
 
 	sign = 1;
 	opr = 0;
@@ -33,71 +33,42 @@ int ft_atoi(char *str)
 	return (sign * opr);
 }
 
-void add_to_list(t_philo_list **list, t_philo **philo)
+void	ft_free(t_philo_list *list)
 {
-	if ((*list)->first == NULL)
-	{
-		(*list)->first = (*philo);
-		(*list)->last = (*philo);
-		(*philo)->next = NULL;
-		(*philo)->prev = NULL;
-		(*list)->size++;
-	}
-	else
-	{
-		(*list)->last->next = (*philo);
-		(*philo)->prev = (*list)->last;
-		(*list)->last = (*philo);
-		(*philo)->next = (*list)->first;
-		(*list)->first->prev = (*philo);
-		(*list)->size++;
-	}
-}
+	t_philo	*current;
+	t_philo	*temp;
 
-#include <stdio.h>
-
-t_philo_list *creat_list(char **argv, t_data **data)
-{
-	int i;
-	t_philo_list *list;
-	t_philo *phil;
-	t_philo *current;
-
-	i = 0;
-	list = init_list();
-	while (i < ft_atoi(argv[1]))
-	{
-		phil = init_philo(argv, &(*data));
-		phil->philo_number = i + 1;
-		add_to_list(&list, &phil);
-		i++;
-	}
 	current = list->first;
-	while (current != list->last)
+	while (current != NULL)
 	{
-		current->fork_left = &(current->prev->fork_right);
-		current = current->next;
+		temp = current;
+		if (current == list->last)
+		{
+			free(temp);
+			temp = NULL;
+			break ;
+		}
+		else
+		{
+			current = current->next;
+			free(temp);
+			temp = NULL;
+		}
 	}
-	current->fork_left = &(current->prev->fork_right);
-	return (list);
-}
-
-void ft_free(t_philo_list *list)
-{
-	free(list->first);
 	free(list);
+	list = NULL;
 }
 
-void destroy_mutex(t_philo_list *list)
+void	destroy_mutex(t_philo_list *list)
 {
-	// pthread_mutex_destroy(&*(current->fork_left));
 	pthread_mutex_destroy(&(list->first->fork_right));
 	pthread_mutex_destroy(&(list->first->data->printf));
+	pthread_mutex_destroy(&(list->first->data->time));
 	pthread_mutex_destroy(&(list->first->data->check_death));
-	// ft_free(list);
+	pthread_mutex_destroy(&(list->first->data->meals_eaten));
 }
 
-int error_message(char *str, t_philo_list *list)
+int	error_message(char *str, t_philo_list *list)
 {
 	printf("%s\n", str);
 	destroy_mutex(list);
@@ -105,19 +76,11 @@ int error_message(char *str, t_philo_list *list)
 	return (1);
 }
 
-void ft_usleep(uint64_t millsec)
+void	ft_usleep(uint64_t millsec)
 {
-	uint64_t time;
+	uint64_t	time;
 
 	time = ft_gettime_millisec() + millsec;
 	while (ft_gettime_millisec() != time)
 		usleep(500);
 }
-
-void error_return(void)
-{
-	printf("Error: invalid input\n");
-	return ;
-}
-
-

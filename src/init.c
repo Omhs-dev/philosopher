@@ -6,16 +6,16 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:45:52 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/12 08:36:38 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/17 09:10:57 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo *init_philo(char **argv, t_data **data)
+t_philo	*init_philo(char **argv, t_data **data)
 {
-	t_philo *phil;
-	
+	t_philo	*phil;
+
 	(void)argv;
 	phil = malloc(sizeof(t_philo));
 	if (!phil)
@@ -23,7 +23,6 @@ t_philo *init_philo(char **argv, t_data **data)
 	pthread_mutex_init(&(phil->fork_right), NULL);
 	phil->meals_eaten = 0;
 	phil->data = *data;
-	// phil->eat_status = 0;
 	phil->philo_number = 0;
 	phil->time_sleep = (*data)->time_sleep;
 	phil->time_eat = (*data)->time_eat;
@@ -34,9 +33,9 @@ t_philo *init_philo(char **argv, t_data **data)
 	return (phil);
 }
 
-t_philo_list *init_list(void)
+t_philo_list	*init_list(void)
 {
-	t_philo_list *list;
+	t_philo_list	*list;
 
 	list = malloc(sizeof(t_philo_list));
 	if (!list)
@@ -47,9 +46,9 @@ t_philo_list *init_list(void)
 	return (list);
 }
 
-t_data *init_data(int argc, char **argv)
+t_data	*init_data(int argc, char **argv)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -62,10 +61,12 @@ t_data *init_data(int argc, char **argv)
 	data->time_eat = ft_atoi(argv[3]);
 	data->time_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		data->max_meals_eaten  = ft_atoi(argv[5]);
+		data->max_meals_eaten = ft_atoi(argv[5]) * data->numbers_of_philo;
 	else
 		data->max_meals_eaten = -1;
 	pthread_mutex_init(&(data->printf), NULL);
 	pthread_mutex_init(&(data->check_death), NULL);
+	pthread_mutex_init(&(data->meals_eaten), NULL);
+	pthread_mutex_init(&(data->time), NULL);
 	return (data);
 }

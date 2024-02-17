@@ -6,15 +6,15 @@
 /*   By: ohamadou <ohamadou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 08:18:55 by ohamadou          #+#    #+#             */
-/*   Updated: 2024/02/14 05:28:05 by ohamadou         ###   ########.fr       */
+/*   Updated: 2024/02/17 09:26:35 by ohamadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int input(char *str)
+int	input(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -22,28 +22,28 @@ int input(char *str)
 		if (str[i] >= '0' && str[i] <= '9')
 			return (1);
 		else
-			break;
+			break ;
 		i++;
 	}
 	return (0);
 }
 
-int check_input(char *str)
+int	check_input(char *str)
 {
-    while(*str)
-    {
-        if (!input(str))
-        {
-            return (1);
-            break ;
-        }
-        else
-            str++;
-    }
-    return (0);
+	while (*str)
+	{
+		if (!input(str))
+		{
+			return (1);
+			break ;
+		}
+		else
+			str++;
+	}
+	return (0);
 }
 
-int all_input(int argc, char **argv)
+int	all_input(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 	{
@@ -61,7 +61,7 @@ int all_input(int argc, char **argv)
 	return (0);
 }
 
-int check_values(int argc, t_data *data)
+int	check_values(int argc, t_data *data)
 {
 	if (argc == 6)
 	{
@@ -75,9 +75,6 @@ int check_values(int argc, t_data *data)
 	}
 	if (data->numbers_of_philo > 200
 		|| data->numbers_of_philo <= 0)
-		// || data->time_die < 0
-		// || data->time_eat < 0
-		// || data->time_sleep < 0)
 	{
 		printf("Error: Invalid values\n");
 		return (1);
