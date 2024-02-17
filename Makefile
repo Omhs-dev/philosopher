@@ -13,8 +13,7 @@ INCS	= -I ./includes/
 
 CC = cc
 
-FLAGS = -g -Wall -Wextra -Werror #-fsanitize=thread
-# -static-libsan
+FLAGS = -g -Wall -Wextra -Werror
 
 OBJS = $(SRCS:.c=.o)
 
